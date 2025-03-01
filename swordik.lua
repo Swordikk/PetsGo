@@ -49,8 +49,14 @@ end
 local function AutoFarmGifts()
 	while _G.AutoFarmGifts == true do wait(0.01)
         for _, v in pairs(workspace.__THINGS.HiddenGifts:GetChildren()) do
-            humanoid:MoveTo(v.Model.Position)
-			humanoid.MoveToFinished:Wait()
+            local PathfindingService = game:GetService("PathfindingService")
+			local path = PathfindingService:CreatePath()
+			path:ComputeAsync(humanoidrootpart.Position,v.Model.Position)
+
+			for _, waypoint in pairs(path:GetWaypoints()) do
+				humanoid:MoveTo(waypoint.Position)
+				humanoid.MoveToFinished:Wait()
+			end
         end
 	end
 end
