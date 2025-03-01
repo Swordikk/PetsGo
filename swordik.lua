@@ -1,5 +1,5 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Build a boat for Treasure", HidePremium = true, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "PetsGo", HidePremium = true, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local players = game:GetService("Players")
 local localplayer = players.LocalPlayer
@@ -34,7 +34,7 @@ local Tab = Window:MakeTab({
 })
 
 Tab:AddToggle({
-	Name = "AutoFarmMoney",
+	Name = "AutoFarmFruits",
 	Default = false,
 	Callback = function(Value)
 		_G.AutoFarmFruits = Value
