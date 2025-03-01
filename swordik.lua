@@ -7,13 +7,6 @@ local character = localplayer.Character
 local humanoid = character.Humanoid
 local humanoidrootpart = character.HumanoidRootPart
 
--- Destroy Objects --
-for _, v in pairs(workspace.__THINGS.Breakables:GetChildren()) do
-    if v.Name == "HighLight" then
-        v:Destroy()
-    end
-end
-
 -- AntiAFK --
 while not game:IsLoaded() do wait() end
 repeat wait() until game.Players.LocalPlayer.Character
@@ -48,41 +41,22 @@ end
 local function AutoFarmFruits()
 	while _G.AutoFarmFruits == true do wait(0.01)
         for _, v in pairs(workspace.__THINGS.Breakables:GetChildren()) do
-            if v.PrimaryPart.Name == "base" then
-                local PathfindingService = game:GetService("PathfindingService")
-                local path = PathfindingService:CreatePath()
-                path:ComputeAsync(humanoidrootpart.Position, v.Position)
 
-                for _, waypoint in pairs(path:GetWaypoints()) do
-                    humanoid:MoveTo(waypoint.Position)
-                    humanoid.MoveToFinished:Wait()
-                end
-            end 
         end
-    end
+	end
 end
 
 local function AutoFarmGifts()
 	while _G.AutoFarmGifts == true do wait(0.01)
-        for _, folder in pairs(workspace.__THINGS.Breakables:GetChildren()) do
-    -- Проверяем, является ли элемент папкой
-            if folder:IsA("Folder") then
-                for _, v in pairs(folder:GetChildren()) do
-                    if v:IsA("Model") and v.folder.base then
-                        local PathfindingService = game:GetService("PathfindingService")
-                        local path = PathfindingService:CreatePath()
-                        
-                        -- Вычисляем путь к позиции объекта
-                        path:ComputeAsync(humanoidrootpart.Position, v.folder.base.Position)
+        for _, v in pairs(workspace.__THINGS.HiddenGifts:GetChildren()) do
+            local PathfindingService = game:GetService("PathfindingService")
+			local path = PathfindingService:CreatePath()
+			path:ComputeAsync(humanoidrootpart.Position,v.Model.Position)
 
-                        -- Проходим по всем путевым точкам
-                        for _, waypoint in pairs(path:GetWaypoints()) do
-                            humanoid:MoveTo(waypoint.Position)
-                            humanoid.MoveToFinished:Wait()
-                        end
-                    end 
-                end
-            end
+			for _, waypoint in pairs(path:GetWaypoints()) do
+				humanoid:MoveTo(waypoint.Position)
+				humanoid.MoveToFinished:Wait()
+			end
         end
 	end
 end
@@ -105,7 +79,7 @@ Tab:AddToggle({
 	Callback = function(Value)
 		_G.AutoFarmFruits = Value
 		AutoFarmFruits()
-	end 
+	end    
 })
 
 Tab:AddToggle({
