@@ -7,19 +7,53 @@ local character = localplayer.Character
 local humanoid = character.Humanoid
 local humanoidrootpart = character.HumanoidRootPart
 
+-- AntiAFK --
+while not game:IsLoaded() do wait() end
+repeat wait() until game.Players.LocalPlayer.Character
+Players = game:GetService("Players")
+local GC = getconnections or get_signal_cons
+if GC then
+	for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
+		if v["Disable"] then v["Disable"](v)
+		elseif v["Disconnect"] then v["Disconnect"](v)
+		end
+	end
+else
+Players.LocalPlayer.Idled:Connect(function()
+	VirtualUser:CaptureController()
+	VirtualUser:ClickButton2(Vector2.new())
+  	end)
+end
+
 -- Functions --
+function WalkSpeed()
+	while _G.WalkSpeed do game:GetService("RunService").RenderStepped:wait()
+	    humanoid.WalkSpeed = _G.WalkSpeed
+    end
+end
+
+function JumpPower()
+	while _G.JumpPower do game:GetService("RunService").RenderStepped:wait()
+	    humanoid.JumpPower = _G.JumpPower
+    end
+end
+
 local function AutoFarmFruits()
-	while _G.AutoFarmFruits == true do wait(1)
-        if humanoid and humanoidrootpart then
-            for _, v in pairs(game:GetDescendants()) do
-                if v.Name == "Hitbox" and v.Parent.Name == "base" then
-                    humanoidrootpart.CFrame = v.CFrame
-                end
-            end
+	while _G.AutoFarmFruits == true do wait(0.01)
+        for _, v in pairs(workspace.__THINGS.Breakables:GetChildren()) do
+            
         end
 	end
 end
 
+local function AutoFarmGifts()
+	while _G.AutoFarmGifts == true do wait(0.01)
+        for _, v in pairs(workspace.__THINGS.HiddenGifts:GetChildren()) do
+            humanoid:MoveTo(v.Model.Position)
+			humanoid.MoveToFinished:Wait()
+        end
+	end
+end
 
 local Tab = Window:MakeTab({
 	Name = "Main",
@@ -42,8 +76,37 @@ Tab:AddToggle({
 	end    
 })
 
+Tab:AddToggle({
+	Name = "AutoFarmGifts",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoFarmGifts = Value
+		AutoFarmGifts()
+	end    
+})
+
 local Tab = Window:MakeTab({
 	Name = "Misc",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
+})
+
+Tab:AddTextbox({
+	Name = "WalkSpeed",
+	Default = "",
+	TextDisappear = false,
+	Callback = function(Value)
+		_G.WalkSpeed = Value
+		WalkSpeed()
+	end
+})
+
+Tab:AddTextbox({
+	Name = "JumpPower",
+	Default = "",
+	TextDisappear = false,
+	Callback = function(Value)
+		_G.JumpPower = Value
+		JumpPower()
+	end
 })
