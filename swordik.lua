@@ -7,10 +7,10 @@ local character = localplayer.Character
 local humanoid = character.Humanoid
 local humanoidrootpart = character.HumanoidRootPart
 local Thieving  = { 
-    --Vector3.new(194.7723846435547, 5.393672466278076, -1.0488529205322266),
-    --Vector3.new(220.02371215820312, 8.296595573425293, -10.974353790283203),
-    --Vector3.new(240.34519958496094, 8.2985200881958, -13.118978500366211),
-    --Vector3.new(274.0917663574219, 10.293213844299316, -41.420467376708984),
+    Vector3.new(194.7723846435547, 5.393672466278076, -1.0488529205322266),
+    Vector3.new(220.02371215820312, 8.296595573425293, -10.974353790283203),
+    Vector3.new(240.34519958496094, 8.2985200881958, -13.118978500366211),
+    Vector3.new(274.0917663574219, 10.293213844299316, -41.420467376708984),
     Vector3.new(295.7476501464844, 10.351471900939941, -44.3170051574707),
     Vector3.new(321.22930908203125, 14.39346981048584, -23.170984268188477),
     Vector3.new(335.78338623046875, 14.409186363220215, -2.5764825344085693),
@@ -59,7 +59,7 @@ local function AutoFarmThieving()
 	while _G.AutoFarmThieving == true do
         for i = 1, #Thieving do
             humanoidrootpart.CFrame = CFrame.new(Thieving[i])
-            wait(5)
+            wait(1)
             if _G.AutoFarmThieving == false then
                 break
             end
