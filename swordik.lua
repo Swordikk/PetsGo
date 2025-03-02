@@ -48,15 +48,27 @@ end
 
 local function AutoFarmGifts()
 	while _G.AutoFarmGifts == true do wait(0.01)
-        for _, v in pairs(workspace.__THINGS.HiddenGifts:GetChildren()) do
-            local PathfindingService = game:GetService("PathfindingService")
-			local path = PathfindingService:CreatePath()
-			path:ComputeAsync(humanoidrootpart.Position,v.Model.Position)
+        for _, folder in pairs(workspace.__THINGS.Breakables:GetChildren()) do
+            if folder:IsA("Model") then
+                for _, v in pairs(folder:GetChildren()) do
+                    if v:IsA("Model") then
+                        local basePart = v:FindFirstChild("base") -- Ищем часть "base"
+                        if basePart then -- Проверяем, существует ли "base"
+                            local PathfindingService = game:GetService("PathfindingService")
+                            local path = PathfindingService:CreatePath()
+                            
+                            -- Вычисляем путь к позиции объекта
+                            path:ComputeAsync(humanoidrootpart.Position, basePart.Position)
 
-			for _, waypoint in pairs(path:GetWaypoints()) do
-				humanoid:MoveTo(waypoint.Position)
-				humanoid.MoveToFinished:Wait()
-			end
+                            -- Проходим по всем путевым точкам
+                            for _, waypoint in pairs(path:GetWaypoints()) do
+                                humanoid:MoveTo(waypoint.Position)
+                                humanoid.MoveToFinished:Wait()
+                            end
+                        end
+                    end 
+                end
+            end
         end
 	end
 end
